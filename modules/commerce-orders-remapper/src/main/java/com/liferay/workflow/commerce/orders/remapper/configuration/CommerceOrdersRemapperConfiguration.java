@@ -70,6 +70,14 @@ public interface CommerceOrdersRemapperConfiguration extends BaseUserActionExecu
     String exceptionWorkflowStatus();
 
     @Meta.AD(
+            deflt = CommerceOrdersRemapperConstants.CONFIG_USE_IN_CONTEXT_USER_DEFAULT,
+            description = "config-use-in-context-user-description",
+            name = "config-use-in-context-user-name",
+            required = false
+    )
+    boolean useInContextUser();
+
+    @Meta.AD(
             deflt = UserActionExecutorConstants.CONFIG_USE_IN_CONTEXT_USER_FOR_ACTION_DEFAULT,
             description = "config-use-in-context-user-for-action-description",
             name = "config-use-in-context-user-for-action-name",
@@ -110,14 +118,6 @@ public interface CommerceOrdersRemapperConfiguration extends BaseUserActionExecu
     String actionUserLookupType();
 
     @Meta.AD(
-            deflt = CommerceOrdersRemapperConstants.CONFIG_USE_IN_CONTEXT_USER_DEFAULT,
-            description = "config-use-in-context-user-description",
-            name = "config-use-in-context-user-name",
-            required = false
-    )
-    boolean useInContextUser();
-
-    @Meta.AD(
             deflt = CommerceOrdersRemapperConstants.CONFIG_USE_WORKFLOW_CONTEXT_KEY_FOR_USER_LOOKUP_VALUE_DEFAULT,
             description = "config-use-workflow-context-key-for-user-lookup-value-description",
             name = "config-use-workflow-context-key-for-user-lookup-value-name",
@@ -126,12 +126,12 @@ public interface CommerceOrdersRemapperConfiguration extends BaseUserActionExecu
     boolean useWorkflowContextKeyForUserLookupValue();
 
     @Meta.AD(
-            deflt = CommerceOrdersRemapperConstants.CONFIG_USER_LOOKUP_VALUE_WORKFLOW_CONTEXT_KEY_DEFAULT,
-            description = "config-user-lookup-value-workflow-context-key-description",
-            name = "config-user-lookup-value-workflow-context-key-name",
+            deflt = CommerceOrdersRemapperConstants.CONFIG_USER_LOOKUP_TYPE_DEFAULT,
+            description = "config-user-lookup-type-description",
+            name = "config-user-lookup-type-name",
             required = false
     )
-    String userLookupValueWorkflowContextKey();
+    String userLookupType();
 
     @Meta.AD(
             deflt = CommerceOrdersRemapperConstants.CONFIG_USER_LOOKUP_VALUE_DEFAULT,
@@ -142,10 +142,10 @@ public interface CommerceOrdersRemapperConfiguration extends BaseUserActionExecu
     String userLookupValue();
 
     @Meta.AD(
-            deflt = CommerceOrdersRemapperConstants.CONFIG_USER_LOOKUP_TYPE_DEFAULT,
-            description = "config-user-lookup-type-description",
-            name = "config-user-lookup-type-name",
+            deflt = CommerceOrdersRemapperConstants.CONFIG_USER_LOOKUP_VALUE_WORKFLOW_CONTEXT_KEY_DEFAULT,
+            description = "config-user-lookup-value-workflow-context-key-description",
+            name = "config-user-lookup-value-workflow-context-key-name",
             required = false
     )
-    String userLookupType();
+    String userLookupValueWorkflowContextKey();
 }

@@ -15,31 +15,30 @@ import org.osgi.service.component.annotations.Reference;
 
 public class CommerceCatalogCreator extends BaseWorkflowActionExecutor<CommerceCatalogCreatorConfiguration, CommerceCatalogCreatorConfigurationWrapper, CommerceCatalogCreatorSettingsHelper> implements ActionExecutor {
     @Reference
-    private CommerceCatalogCreatorSettingsHelper commerceCatalogCreatorSettingsHelper;
+    private CommerceCatalogCreatorSettingsHelper _commerceCatalogCreatorSettingsHelper;
 
     @Reference
-    private WorkflowActionExecutionContextService workflowActionExecutionContextService;
+    private WorkflowActionExecutionContextService _workflowActionExecutionContextService;
 
     @Reference
-    private WorkflowStatusManager workflowStatusManager;
+    private WorkflowStatusManager _workflowStatusManager;
+
+    @Override
+    protected CommerceCatalogCreatorSettingsHelper getSettingsHelper() {
+        return _commerceCatalogCreatorSettingsHelper;
+    }
 
     @Override
     protected WorkflowActionExecutionContextService getWorkflowActionExecutionContextService() {
-        return workflowActionExecutionContextService;
+        return _workflowActionExecutionContextService;
     }
 
     @Override
     protected WorkflowStatusManager getWorkflowStatusManager() {
-        return workflowStatusManager;
+        return _workflowStatusManager;
     }
 
     @Override
     protected void execute(KaleoAction kaleoAction, ExecutionContext executionContext, WorkflowActionExecutionContext workflowActionExecutionContext, CommerceCatalogCreatorConfigurationWrapper commerceCatalogCreatorConfigurationWrapper) throws ActionExecutorException {
-
-    }
-
-    @Override
-    protected CommerceCatalogCreatorSettingsHelper getSettingsHelper() {
-        return commerceCatalogCreatorSettingsHelper;
     }
 }

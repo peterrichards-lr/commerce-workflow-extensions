@@ -15,6 +15,15 @@ import java.util.stream.Collectors;
         immediate = true, service = CommerceOrdersRemapperConfigurationWrapper.class
 )
 public class CommerceOrdersRemapperConfigurationWrapper extends BaseUserActionExecutorConfigurationWrapper<CommerceOrdersRemapperConfiguration> implements UserLookupConfiguration {
+    @Activate
+    @Modified
+    protected void activate(final Map<String, Object> properties) {
+        _log.trace("Activating {} : {}", getClass().getSimpleName(), properties.keySet().stream().map(key -> key + "=" + properties.get(key).toString()).collect(Collectors.joining(", ", "{", "}")));
+        final CommerceOrdersRemapperConfiguration configuration = ConfigurableUtil.createConfigurable(
+                CommerceOrdersRemapperConfiguration.class, properties);
+        super.setConfiguration(configuration);
+    }
+
     public boolean isInContextUserRequired() {
         return getConfiguration().useInContextUser();
     }
@@ -33,15 +42,5 @@ public class CommerceOrdersRemapperConfigurationWrapper extends BaseUserActionEx
 
     public String getUserLookupType() {
         return getConfiguration().userLookupType();
-    }
-
-    @Activate
-    @Modified
-    protected void activate(final Map<String, Object> properties) {
-        _log.trace("Activating {} : {}", getClass().getSimpleName(), properties.keySet().stream().map(key -> key + "=" + properties.get(key).toString()).collect(Collectors.joining(", ", "{", "}")));
-        final CommerceOrdersRemapperConfiguration configuration = ConfigurableUtil.createConfigurable(
-                CommerceOrdersRemapperConfiguration.class, properties);
-
-        super.setConfiguration(configuration);
     }
 }

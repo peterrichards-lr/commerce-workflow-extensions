@@ -38,41 +38,26 @@ import java.util.Map;
 public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<CommerceOrdersRemapperConfiguration, CommerceOrdersRemapperConfigurationWrapper, CommerceOrdersRemapperSettingsHelper> {
 
     @Reference
-    private CommerceOrdersRemapperSettingsHelper commerceOrdersRemapperSettingsHelper;
-
+    private AccountEntryLocalService _accountEntryLocalService;
     @Reference
-    private UserLocalService userLocalService;
-
+    private CommerceOrderLocalService _commerceOrderLocalService;
     @Reference
-    private AccountEntryLocalService accountEntryLocalService;
-
+    private CommerceOrdersRemapperSettingsHelper _commerceOrdersRemapperSettingsHelper;
     @Reference
-    private CommerceOrderLocalService commerceOrderLocalService;
-
+    private UserLocalService _userLocalService;
     @Reference
-    private WorkflowActionExecutionContextService workflowActionExecutionContextService;
-
+    private WorkflowActionExecutionContextService _workflowActionExecutionContextService;
     @Reference
     private WorkflowStatusManager _workflowStatusManager;
 
     @Override
     protected CommerceOrdersRemapperSettingsHelper getSettingsHelper() {
-        return commerceOrdersRemapperSettingsHelper;
-    }
-
-    @Override
-    protected WorkflowActionExecutionContextService getWorkflowActionExecutionContextService() {
-        return workflowActionExecutionContextService;
-    }
-
-    @Override
-    protected WorkflowStatusManager getWorkflowStatusManager() {
-        return _workflowStatusManager;
+        return _commerceOrdersRemapperSettingsHelper;
     }
 
     @Override
     protected UserLocalService getUserLocalService() {
-        return userLocalService;
+        return _userLocalService;
     }
 
     @Override
@@ -100,41 +85,30 @@ public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<Comme
         }
     }
 
-    private UserLookupHelper getUserLookupHelper() {
-        return new UserLookupHelper();
-    }
-
     private boolean remapCommerceOrders(final Map<String, Serializable> workflowContext, final CommerceOrdersRemapperConfigurationWrapper configuration) {
         final long companyId = GetterUtil.getLong(workflowContext.get(WorkflowConstants.CONTEXT_COMPANY_ID));
-
         final long userId;
         try {
-            userId = getUserLookupHelper().lookupUserId(userLocalService, companyId, workflowContext, configuration);
+            userId = getUserLookupHelper().lookupUserId(_userLocalService, companyId, workflowContext, configuration);
         } catch (final PortalException e) {
             _log.warn("Unable to lookup user", e);
             return false;
         }
-
-        final AccountEntry personalAccount = accountEntryLocalService.fetchPersonAccountEntry(userId);
+        final AccountEntry personalAccount = _accountEntryLocalService.fetchPersonAccountEntry(userId);
         if (personalAccount == null) {
             _log.debug("User does not have a personal account");
             return true;
         }
-
         final long commerceAccountId = personalAccount.getAccountEntryId();
-
-        if (commerceOrderLocalService.getCommerceOrdersCountByCommerceAccountId(commerceAccountId) == 0) {
+        if (_commerceOrderLocalService.getCommerceOrdersCountByCommerceAccountId(commerceAccountId) == 0) {
             _log.debug("User does not have any commerce orders");
             return true;
         }
-
         final int start = -1;
         final int end = -1;
         final OrderByComparator<CommerceOrder> orderByComparator = getOrderByComparator();
-
-        final List<CommerceOrder> commerceOrders = commerceOrderLocalService.getCommerceOrdersByCommerceAccountId(
+        final List<CommerceOrder> commerceOrders = _commerceOrderLocalService.getCommerceOrdersByCommerceAccountId(
                 commerceAccountId, start, end, orderByComparator);
-
         try {
             for (final CommerceOrder commerceOrder : commerceOrders) {
                 _log.debug(commerceOrder.getCommerceAccountName());
@@ -143,8 +117,11 @@ public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<Comme
             _log.error("Unable to get account name", e);
             return false;
         }
-
         return true;
+    }
+
+    private UserLookupHelper getUserLookupHelper() {
+        return new UserLookupHelper();
     }
 
     private OrderByComparator<CommerceOrder> getOrderByComparator() {
@@ -194,5 +171,15 @@ public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<Comme
                 "totalDiscountWithTaxAmount", true, "totalWithTaxAmount", true,
                 "status", true, "statusByUserId", true, "statusByUserName", true,
                 "statusDate", true);
+    }
+
+    @Override
+    protected WorkflowActionExecutionContextService getWorkflowActionExecutionContextService() {
+        return _workflowActionExecutionContextService;
+    }
+
+    @Override
+    protected WorkflowStatusManager getWorkflowStatusManager() {
+        return _workflowStatusManager;
     }
 }
