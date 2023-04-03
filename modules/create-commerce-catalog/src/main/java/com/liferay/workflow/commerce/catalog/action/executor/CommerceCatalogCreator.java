@@ -29,13 +29,13 @@ public class CommerceCatalogCreator extends BaseWorkflowActionExecutor<CommerceC
     }
 
     @Override
-    protected void execute(KaleoAction kaleoAction, ExecutionContext executionContext, WorkflowActionExecutionContext workflowActionExecutionContext, CommerceCatalogCreatorConfigurationWrapper commerceCatalogCreatorConfigurationWrapper) throws ActionExecutorException {
-
+    protected WorkflowStatusManager getWorkflowStatusManager() {
+        return workflowStatusManager;
     }
 
     @Override
-    public String[] getActionExecutorKeys() {
-        return new String[0];
+    protected void execute(KaleoAction kaleoAction, ExecutionContext executionContext, WorkflowActionExecutionContext workflowActionExecutionContext, CommerceCatalogCreatorConfigurationWrapper commerceCatalogCreatorConfigurationWrapper) throws ActionExecutorException {
+
     }
 
     @Override
