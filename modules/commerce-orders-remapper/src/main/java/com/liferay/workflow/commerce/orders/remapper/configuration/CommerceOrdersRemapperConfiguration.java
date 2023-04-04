@@ -20,6 +20,7 @@ import com.liferay.workflow.extensions.common.constants.WorkflowExtensionsConsta
 public interface CommerceOrdersRemapperConfiguration extends BaseUserActionExecutorConfiguration {
     String PID = "com.liferay.workflow.commerce.orders.remapper.configuration.CommerceOrdersRemapperConfiguration";
 
+    //@formatter:off
     @Meta.AD(
             deflt = WorkflowExtensionsConstants.CONFIG_WORKFLOW_NODE_ID_ACTION_DEFAULT,
             description = "config-workflow-node-identifier-description",
@@ -148,4 +149,5 @@ public interface CommerceOrdersRemapperConfiguration extends BaseUserActionExecu
             required = false
     )
     String userLookupValueWorkflowContextKey();
+    //@formatter:on
 }

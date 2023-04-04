@@ -51,16 +51,6 @@ public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<Comme
     private WorkflowStatusManager _workflowStatusManager;
 
     @Override
-    protected CommerceOrdersRemapperSettingsHelper getSettingsHelper() {
-        return _commerceOrdersRemapperSettingsHelper;
-    }
-
-    @Override
-    protected UserLocalService getUserLocalService() {
-        return _userLocalService;
-    }
-
-    @Override
     protected void execute(final KaleoAction kaleoAction, final ExecutionContext executionContext, final WorkflowActionExecutionContext workflowExecutionContext, final CommerceOrdersRemapperConfigurationWrapper configuration, final User actionUser) throws ActionExecutorException {
         final Map<String, Serializable> workflowContext = executionContext.getWorkflowContext();
         try {
@@ -83,45 +73,6 @@ public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<Comme
                 _log.error("Unexpected exception. See inner exception for details", e);
             }
         }
-    }
-
-    private boolean remapCommerceOrders(final Map<String, Serializable> workflowContext, final CommerceOrdersRemapperConfigurationWrapper configuration) {
-        final long companyId = GetterUtil.getLong(workflowContext.get(WorkflowConstants.CONTEXT_COMPANY_ID));
-        final long userId;
-        try {
-            userId = getUserLookupHelper().lookupUserId(_userLocalService, companyId, workflowContext, configuration);
-        } catch (final PortalException e) {
-            _log.warn("Unable to lookup user", e);
-            return false;
-        }
-        final AccountEntry personalAccount = _accountEntryLocalService.fetchPersonAccountEntry(userId);
-        if (personalAccount == null) {
-            _log.debug("User does not have a personal account");
-            return true;
-        }
-        final long commerceAccountId = personalAccount.getAccountEntryId();
-        if (_commerceOrderLocalService.getCommerceOrdersCountByCommerceAccountId(commerceAccountId) == 0) {
-            _log.debug("User does not have any commerce orders");
-            return true;
-        }
-        final int start = -1;
-        final int end = -1;
-        final OrderByComparator<CommerceOrder> orderByComparator = getOrderByComparator();
-        final List<CommerceOrder> commerceOrders = _commerceOrderLocalService.getCommerceOrdersByCommerceAccountId(
-                commerceAccountId, start, end, orderByComparator);
-        try {
-            for (final CommerceOrder commerceOrder : commerceOrders) {
-                _log.debug(commerceOrder.getCommerceAccountName());
-            }
-        } catch (final PortalException e) {
-            _log.error("Unable to get account name", e);
-            return false;
-        }
-        return true;
-    }
-
-    private UserLookupHelper getUserLookupHelper() {
-        return new UserLookupHelper();
     }
 
     private OrderByComparator<CommerceOrder> getOrderByComparator() {
@@ -174,6 +125,20 @@ public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<Comme
     }
 
     @Override
+    protected CommerceOrdersRemapperSettingsHelper getSettingsHelper() {
+        return _commerceOrdersRemapperSettingsHelper;
+    }
+
+    @Override
+    protected UserLocalService getUserLocalService() {
+        return _userLocalService;
+    }
+
+    private UserLookupHelper getUserLookupHelper() {
+        return new UserLookupHelper();
+    }
+
+    @Override
     protected WorkflowActionExecutionContextService getWorkflowActionExecutionContextService() {
         return _workflowActionExecutionContextService;
     }
@@ -181,5 +146,40 @@ public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<Comme
     @Override
     protected WorkflowStatusManager getWorkflowStatusManager() {
         return _workflowStatusManager;
+    }
+
+    private boolean remapCommerceOrders(final Map<String, Serializable> workflowContext, final CommerceOrdersRemapperConfigurationWrapper configuration) {
+        final long companyId = GetterUtil.getLong(workflowContext.get(WorkflowConstants.CONTEXT_COMPANY_ID));
+        final long userId;
+        try {
+            userId = getUserLookupHelper().lookupUserId(_userLocalService, companyId, workflowContext, configuration);
+        } catch (final PortalException e) {
+            _log.warn("Unable to lookup user", e);
+            return false;
+        }
+        final AccountEntry personalAccount = _accountEntryLocalService.fetchPersonAccountEntry(userId);
+        if (personalAccount == null) {
+            _log.debug("User does not have a personal account");
+            return true;
+        }
+        final long commerceAccountId = personalAccount.getAccountEntryId();
+        if (_commerceOrderLocalService.getCommerceOrdersCountByCommerceAccountId(commerceAccountId) == 0) {
+            _log.debug("User does not have any commerce orders");
+            return true;
+        }
+        final int start = -1;
+        final int end = -1;
+        final OrderByComparator<CommerceOrder> orderByComparator = getOrderByComparator();
+        final List<CommerceOrder> commerceOrders = _commerceOrderLocalService.getCommerceOrdersByCommerceAccountId(
+                commerceAccountId, start, end, orderByComparator);
+        try {
+            for (final CommerceOrder commerceOrder : commerceOrders) {
+                _log.debug(commerceOrder.getCommerceAccountName());
+            }
+        } catch (final PortalException e) {
+            _log.error("Unable to get account name", e);
+            return false;
+        }
+        return true;
     }
 }

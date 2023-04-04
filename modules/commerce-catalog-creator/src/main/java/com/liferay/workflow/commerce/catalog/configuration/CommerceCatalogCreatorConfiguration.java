@@ -2,7 +2,9 @@ package com.liferay.workflow.commerce.catalog.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
-import com.liferay.workflow.extensions.common.configuration.BaseActionExecutorConfiguration;
+import com.liferay.workflow.commerce.catalog.constants.CommerceCatalogCreatorConstants;
+import com.liferay.workflow.extensions.common.configuration.BaseEntityCreatorActionExecutorConfiguration;
+import com.liferay.workflow.extensions.common.constants.UserActionExecutorConstants;
 import com.liferay.workflow.extensions.common.constants.WorkflowExtensionsConstants;
 
 @ExtendedObjectClassDefinition(
@@ -15,9 +17,10 @@ import com.liferay.workflow.extensions.common.constants.WorkflowExtensionsConsta
         localization = "content/Language", name = "config-commerce-catalog-creator-name",
         description = "config-commerce-catalog-creator-description"
 )
-public interface CommerceCatalogCreatorConfiguration extends BaseActionExecutorConfiguration {
+public interface CommerceCatalogCreatorConfiguration extends BaseEntityCreatorActionExecutorConfiguration {
     String PID = "com.liferay.workflow.commerce.catalog.configuration.CommerceCatalogCreatorConfiguration";
 
+    //@formatter:off
     @Meta.AD(
             deflt = WorkflowExtensionsConstants.CONFIG_WORKFLOW_NODE_ID_ACTION_DEFAULT,
             description = "config-workflow-node-identifier-description",
@@ -66,4 +69,68 @@ public interface CommerceCatalogCreatorConfiguration extends BaseActionExecutorC
             required = false
     )
     String exceptionWorkflowStatus();
+    @Meta.AD(
+            deflt = UserActionExecutorConstants.CONFIG_USE_IN_CONTEXT_USER_FOR_ACTION_DEFAULT,
+            description = "config-use-in-context-user-for-action-description",
+            name = "config-use-in-context-user-for-action-name",
+            required = false
+    )
+    boolean useInContextUserForAction();
+
+    @Meta.AD(
+            deflt = UserActionExecutorConstants.CONFIG_USE_WORKFLOW_CONTEXT_KEY_FOR_ACTION_USER_LOOKUP_VALUE_DEFAULT,
+            description = "config-use-workflow-context-key-for-action-user-lookup-value-description",
+            name = "config-use-workflow-context-key-for-action-user-lookup-value-name",
+            required = false
+    )
+    boolean useWorkflowContextKeyForActionUserLookupValue();
+
+    @Meta.AD(
+            deflt = UserActionExecutorConstants.CONFIG_ACTION_USER_LOOKUP_TYPE_DEFAULT,
+            description = "config-action-user-lookup-type-description",
+            name = "config-action-user-lookup-type-name",
+            required = false
+    )
+    String actionUserLookupType();
+
+    @Meta.AD(
+            deflt = UserActionExecutorConstants.CONFIG_ACTION_USER_LOOKUP_VALUE_WORKFLOW_CONTEXT_KEY_DEFAULT,
+            description = "config-action-user-lookup-value-workflow-context-key-description",
+            name = "config-action-user-lookup-value-workflow-context-key-name",
+            required = false
+    )
+    String actionUserLookupValueWorkflowContextKey();
+
+    @Meta.AD(
+            deflt = UserActionExecutorConstants.CONFIG_ACTION_USER_LOOKUP_VALUE_DEFAULT,
+            description = "config-action-user-lookup-value-description",
+            name = "config-action-user-lookup-value-name",
+            required = false
+    )
+    String actionUserLookupValue();
+
+    @Meta.AD(
+            deflt = CommerceCatalogCreatorConstants.CONFIG_ENTITY_CREATION_ATTRIBUTES_DEFAULT,
+            description = "config-entity-creation-attributes-description",
+            name = "config-entity-creation-attributes-name",
+            required = false
+    )
+    String[] entityCreationAttributes();
+
+    @Meta.AD(
+            deflt = CommerceCatalogCreatorConstants.CONFIG_RETURN_EXISTING_ENTITY_IDENTIFIER_IF_FOUND_DEFAULT,
+            description = "config-return-existing-entity-identifier-if-found-description",
+            name = "config-return-existing-entity-identifier-if-found-name",
+            required = false
+    )
+    boolean returnExistingEntityIdentifierIfFound();
+
+    @Meta.AD(
+            deflt = CommerceCatalogCreatorConstants.CONFIG_CREATED_ENTITY_IDENTIFIER_WORKFLOW_CONTEXT_KEY_DEFAULT,
+            description = "config-created-entity-identifier-workflow-context-key-description",
+            name = "config-created-entity-identifier-workflow-context-key-name",
+            required = false
+    )
+    String createdEntityIdentifierWorkflowContextKey();
+    //@formatter:on
 }
