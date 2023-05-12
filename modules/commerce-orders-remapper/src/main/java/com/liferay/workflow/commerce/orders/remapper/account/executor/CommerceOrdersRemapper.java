@@ -35,7 +35,7 @@ import java.util.Map;
  * @author peterrichards
  */
 @Component(property = "com.liferay.portal.workflow.kaleo.runtime.action.executor.language=java", service = ActionExecutor.class, configurationPid = CommerceOrdersRemapperConfiguration.PID)
-public class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<CommerceOrdersRemapperConfiguration, CommerceOrdersRemapperConfigurationWrapper, CommerceOrdersRemapperSettingsHelper> {
+public final class CommerceOrdersRemapper extends BaseWorkflowUserActionExecutor<CommerceOrdersRemapperConfiguration, CommerceOrdersRemapperConfigurationWrapper, CommerceOrdersRemapperSettingsHelper> implements ActionExecutor {
 
     @Reference
     private AccountEntryLocalService _accountEntryLocalService;
