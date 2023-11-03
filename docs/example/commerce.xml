@@ -1,0 +1,120 @@
+Skip to Main Content
+        Edit Workflow Definition
+        Open Applications Menu
+        Ctrl+⌥+A
+        Commerce Example
+        Source
+        Write your definition or
+        import a file.
+        132
+        Inspect Workflow Context
+        133
+        </label>
+        134
+        </labels>
+        135
+<transitions>
+    136
+    <transition>
+        137
+        <labels>
+            138
+            <label language-id="en_US">
+                139
+                Create Catalog
+                140
+            </label>
+            141
+        </labels>
+        142
+        <name>e0eda7fb-0b92-472c-a706-16d4c5c121d6</name>
+        143
+        <target>4f17173b-bc26-4f4f-9598-7ebc460da681</target>
+        144
+        <default>true</default>
+        145
+    </transition>
+    146
+</transitions>
+        147
+        </state>
+        148
+<state>
+149
+<name>4f17173b-bc26-4f4f-9598-7ebc460da681</name>
+150
+<description>Execute actions in the workflow.</description>
+151
+<metadata>
+    152
+    <![CDATA[
+153
+                {
+154
+                    "xy": [
+155
+                        280.7265625,
+156
+                        247
+157
+                    ]
+158
+                }
+159
+            ]]>
+    160
+</metadata>
+161
+<actions>
+    162
+    <action>
+        163
+        <name>Create Supplier Catalog</name>
+        164
+        <description></description>
+        165
+        <script>
+            166
+            <![CDATA[com.liferay.workflow.commerce.catalog.action.executor.CommerceCatalogCreator]]>
+            167
+        </script>
+        168
+        <script-language>java</script-language>
+        169
+        <priority>1</priority>
+        170
+        <execution-type>onEntry</execution-type>
+        171
+    </action>
+    172
+</actions>
+173
+<labels>
+    174
+    <label language-id="en_US">
+        175
+        Create Supplier Catalog
+        176
+    </label>
+    177
+</labels>
+178
+<transitions>
+    179
+    <transition>
+        180
+        <labels>
+            181
+            <label language-id="en_US">
+                182
+                Trace
+                183
+            </label>
+            184
+        </labels>
+        185
+        <name>4129e0c9-dcc0-4e87-acae-bf0c557067af</name>
+        186
+        <target>9780468c-6b1b-4308-a692-12aadeb2a465</target>
+        187
+        <default>true</default>

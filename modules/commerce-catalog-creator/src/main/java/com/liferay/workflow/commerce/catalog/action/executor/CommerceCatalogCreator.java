@@ -1,5 +1,6 @@
 package com.liferay.workflow.commerce.catalog.action.executor;
 
+import com.liferay.account.constants.AccountConstants;
 import com.liferay.commerce.product.model.CommerceCatalog;
 import com.liferay.commerce.product.service.CommerceCatalogLocalService;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -9,7 +10,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.workflow.WorkflowException;
-import com.liferay.portal.kernel.workflow.WorkflowStatusManager;
 import com.liferay.portal.workflow.kaleo.model.KaleoAction;
 import com.liferay.portal.workflow.kaleo.runtime.ExecutionContext;
 import com.liferay.portal.workflow.kaleo.runtime.action.executor.ActionExecutor;
@@ -44,8 +44,6 @@ public final class CommerceCatalogCreator extends BaseWorkflowEntityCreatorActio
     private UserLocalService _userLocalService;
     @Reference
     private WorkflowActionExecutionContextService _workflowActionExecutionContextService;
-    @Reference
-    private WorkflowStatusManager _workflowStatusManager;
 
     private boolean createCommerceCatalog(final User creator, final Map<String, Serializable> workflowContext, final ServiceContext serviceContext, final CommerceCatalogCreatorConfigurationWrapper configuration) throws ActionExecutorException {
         final Map<String, Object> methodParameters = buildMethodParametersMap(workflowContext, serviceContext, configuration);
@@ -54,11 +52,12 @@ public final class CommerceCatalogCreator extends BaseWorkflowEntityCreatorActio
         final String commerceCurrencyCode = (String) methodParameters.get(CommerceCatalogCreatorConstants.METHOD_PARAM_COMMERCE_CURRENCY_CODE);
         final String catalogDefaultLanguageId = (String) methodParameters.get(CommerceCatalogCreatorConstants.METHOD_PARAM_CATALOG_DEFAULT_LANGUAGE_ID);
         final boolean system = (boolean) methodParameters.get(CommerceCatalogCreatorConstants.METHOD_PARAM_SYSTEM_CATALOG);
+        final long accountEntryId = (long) methodParameters.get(CommerceCatalogCreatorConstants.METHOD_PARAM_ACCOUNT_ENTRY_ID);
         try {
             CommerceCatalog commerceCatalog = configuration.getReturnExistingEntityIdentifierIfFound() ? fetchCommerceCatalog(name) : null;
             if (commerceCatalog == null) {
                 serviceContext.setUserId(creator.getUserId());
-                commerceCatalog = _commerceCatalogLocalService.addCommerceCatalog(externalReferenceCode, name, commerceCurrencyCode, catalogDefaultLanguageId, system, serviceContext);
+                commerceCatalog = _commerceCatalogLocalService.addCommerceCatalog(externalReferenceCode, accountEntryId, name, commerceCurrencyCode, catalogDefaultLanguageId, system, serviceContext);
                 WorkflowExtensionsUtil.runIndexer(commerceCatalog, serviceContext);
                 _log.debug("New Commerce catalog created");
             } else {
@@ -125,6 +124,7 @@ public final class CommerceCatalogCreator extends BaseWorkflowEntityCreatorActio
             put(CommerceCatalogCreatorConstants.METHOD_PARAM_COMMERCE_CURRENCY_CODE, new MethodParameterConfiguration(CommerceCatalogCreatorConstants.METHOD_PARAM_COMMERCE_CURRENCY_CODE, String.class, false, CommerceCatalogCreatorConstants.COMMERCE_CURRENCY_CODE));
             put(CommerceCatalogCreatorConstants.METHOD_PARAM_CATALOG_DEFAULT_LANGUAGE_ID, new MethodParameterConfiguration(CommerceCatalogCreatorConstants.METHOD_PARAM_CATALOG_DEFAULT_LANGUAGE_ID, String.class, false, CommerceCatalogCreatorConstants.CATALOG_DEFAULT_LANGUAGE_ID));
             put(CommerceCatalogCreatorConstants.METHOD_PARAM_SYSTEM_CATALOG, new MethodParameterConfiguration(CommerceCatalogCreatorConstants.METHOD_PARAM_SYSTEM_CATALOG, Boolean.class, false, CommerceCatalogCreatorConstants.SYSTEM_CATALOG));
+            put(CommerceCatalogCreatorConstants.METHOD_PARAM_ACCOUNT_ENTRY_ID, new MethodParameterConfiguration(CommerceCatalogCreatorConstants.METHOD_PARAM_ACCOUNT_ENTRY_ID, Long.class, false, AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT));
         }};
     }
 
@@ -141,10 +141,5 @@ public final class CommerceCatalogCreator extends BaseWorkflowEntityCreatorActio
     @Override
     protected WorkflowActionExecutionContextService getWorkflowActionExecutionContextService() {
         return _workflowActionExecutionContextService;
-    }
-
-    @Override
-    protected WorkflowStatusManager getWorkflowStatusManager() {
-        return _workflowStatusManager;
     }
 }

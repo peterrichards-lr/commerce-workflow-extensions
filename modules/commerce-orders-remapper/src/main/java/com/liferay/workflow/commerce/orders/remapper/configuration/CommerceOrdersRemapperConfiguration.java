@@ -79,14 +79,6 @@ public interface CommerceOrdersRemapperConfiguration extends BaseUserActionExecu
     boolean useInContextUser();
 
     @Meta.AD(
-            deflt = UserActionExecutorConstants.CONFIG_USE_IN_CONTEXT_USER_FOR_ACTION_DEFAULT,
-            description = "config-use-in-context-user-for-action-description",
-            name = "config-use-in-context-user-for-action-name",
-            required = false
-    )
-    boolean useInContextUserForAction();
-
-    @Meta.AD(
             deflt = UserActionExecutorConstants.CONFIG_USE_WORKFLOW_CONTEXT_KEY_FOR_ACTION_USER_LOOKUP_VALUE_DEFAULT,
             description = "config-use-workflow-context-key-for-action-user-lookup-value-description",
             name = "config-use-workflow-context-key-for-action-user-lookup-value-name",

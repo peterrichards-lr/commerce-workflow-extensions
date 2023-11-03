@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Sales Engineering Commerce Catalog Creator
 Bundle-SymbolicName: com.liferay.workflow.commerce.catalog
-Bundle-Version: 1.0.0
+Bundle-Version: 2.0.0
 Export-Package: com.liferay.workflow.commerce.catalog
 -metatype-inherit: false
