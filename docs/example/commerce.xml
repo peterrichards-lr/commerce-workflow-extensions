@@ -1,120 +1,234 @@
-Skip to Main Content
-        Edit Workflow Definition
-        Open Applications Menu
-        Ctrl+⌥+A
-        Commerce Example
-        Source
-        Write your definition or
-        import a file.
-        132
-        Inspect Workflow Context
-        133
-        </label>
-        134
-        </labels>
-        135
-<transitions>
-    136
-    <transition>
-        137
+<?xml version="1.0"?>
+
+<workflow-definition
+        xmlns="urn:liferay.com:liferay-workflow_7.4.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:liferay.com:liferay-workflow_7.4.0 http://www.liferay.com/dtd/liferay-workflow-definition_7_4_0.xsd"
+>
+    <name>Commerce Example</name>
+    <version>13</version>
+    <state>
+        <name>65378e2a-4230-4635-b0fc-23815c776fe4</name>
+        <description>Begin a workflow.</description>
+        <metadata>
+            <![CDATA[
+				{
+					"xy": [
+						-83.07766723632812,
+						-47.077667236328125
+					]
+				}
+			]]>
+        </metadata>
+        <initial>true</initial>
         <labels>
-            138
             <label language-id="en_US">
-                139
-                Create Catalog
-                140
+                Start
             </label>
-            141
         </labels>
-        142
-        <name>e0eda7fb-0b92-472c-a706-16d4c5c121d6</name>
-        143
-        <target>4f17173b-bc26-4f4f-9598-7ebc460da681</target>
-        144
-        <default>true</default>
-        145
-    </transition>
-    146
-</transitions>
-        147
-        </state>
-        148
-<state>
-149
-<name>4f17173b-bc26-4f4f-9598-7ebc460da681</name>
-150
-<description>Execute actions in the workflow.</description>
-151
-<metadata>
-    152
-    <![CDATA[
-153
-                {
-154
-                    "xy": [
-155
-                        280.7265625,
-156
-                        247
-157
-                    ]
-158
-                }
-159
-            ]]>
-    160
-</metadata>
-161
-<actions>
-    162
-    <action>
-        163
-        <name>Create Supplier Catalog</name>
-        164
-        <description></description>
-        165
-        <script>
-            166
-            <![CDATA[com.liferay.workflow.commerce.catalog.action.executor.CommerceCatalogCreator]]>
-            167
-        </script>
-        168
-        <script-language>java</script-language>
-        169
-        <priority>1</priority>
-        170
-        <execution-type>onEntry</execution-type>
-        171
-    </action>
-    172
-</actions>
-173
-<labels>
-    174
-    <label language-id="en_US">
-        175
-        Create Supplier Catalog
-        176
-    </label>
-    177
-</labels>
-178
-<transitions>
-    179
-    <transition>
-        180
+        <transitions>
+            <transition>
+                <labels>
+                    <label language-id="en_US">
+                        Process Form
+                    </label>
+                </labels>
+                <name>c7320ff2-ef6a-4a6a-8601-987570a9db7c</name>
+                <target>29f32857-c3ec-47eb-bd09-a9a1b71d1687</target>
+                <default>true</default>
+            </transition>
+        </transitions>
+    </state>
+    <state>
+        <name>003fe1e7-e620-4bbf-9dfd-57edb817d1f1</name>
+        <description>Conclude the workflow.</description>
+        <metadata>
+            <![CDATA[
+				{
+					"xy": [
+						31.166900634765625,
+						489.29833984375
+					],
+					"terminal": true
+				}
+			]]>
+        </metadata>
         <labels>
-            181
             <label language-id="en_US">
-                182
-                Trace
-                183
+                End
             </label>
-            184
         </labels>
-        185
-        <name>4129e0c9-dcc0-4e87-acae-bf0c557067af</name>
-        186
-        <target>9780468c-6b1b-4308-a692-12aadeb2a465</target>
-        187
-        <default>true</default>
+    </state>
+    <state>
+        <name>29f32857-c3ec-47eb-bd09-a9a1b71d1687</name>
+        <description>Execute actions in the workflow.</description>
+        <metadata>
+            <![CDATA[
+				{
+					"xy": [
+						325.7635498046875,
+						-40.55657958984375
+					]
+				}
+			]]>
+        </metadata>
+        <actions>
+            <action>
+                <name>Populate Workflow Context</name>
+                <description></description>
+                <script>
+                    <![CDATA[com.liferay.workflow.dynamic.data.mapping.form.object.extractor.action.executor.DDMFormObjectStorageExtractor]]>
+                </script>
+                <script-language>java</script-language>
+                <priority>1</priority>
+                <execution-type>onEntry</execution-type>
+            </action>
+        </actions>
+        <labels>
+            <label language-id="en_US">
+                Populate Workflow
+            </label>
+        </labels>
+        <transitions>
+            <transition>
+                <labels>
+                    <label language-id="en_US">
+                        Trace
+                    </label>
+                </labels>
+                <name>e5b7c83e-3cab-4092-a4bf-43d7d65d0177</name>
+                <target>08bbc651-9941-4cf3-a15b-efb3363f447a</target>
+                <default>true</default>
+            </transition>
+        </transitions>
+    </state>
+    <state>
+        <name>08bbc651-9941-4cf3-a15b-efb3363f447a</name>
+        <description>Execute actions in the workflow.</description>
+        <metadata>
+            <![CDATA[
+				{
+					"xy": [
+						690.7265472412109,
+						102.99998474121094
+					]
+				}
+			]]>
+        </metadata>
+        <actions>
+            <action>
+                <name>Preaction Inspection</name>
+                <description></description>
+                <script>
+                    <![CDATA[com.liferay.workflow.context.inspector.action.executor.WorkflowContextInspector]]>
+                </script>
+                <script-language>java</script-language>
+                <priority>1</priority>
+                <execution-type>onEntry</execution-type>
+            </action>
+        </actions>
+        <labels>
+            <label language-id="en_US">
+                Inspect Workflow Context
+            </label>
+        </labels>
+        <transitions>
+            <transition>
+                <labels>
+                    <label language-id="en_US">
+                        Create Catalog
+                    </label>
+                </labels>
+                <name>e0eda7fb-0b92-472c-a706-16d4c5c121d6</name>
+                <target>4f17173b-bc26-4f4f-9598-7ebc460da681</target>
+                <default>true</default>
+            </transition>
+        </transitions>
+    </state>
+    <state>
+        <name>4f17173b-bc26-4f4f-9598-7ebc460da681</name>
+        <description>Execute actions in the workflow.</description>
+        <metadata>
+            <![CDATA[
+				{
+					"xy": [
+						280.7265625,
+						247
+					]
+				}
+			]]>
+        </metadata>
+        <actions>
+            <action>
+                <name>Create Supplier Catalog</name>
+                <description></description>
+                <script>
+                    <![CDATA[com.liferay.workflow.commerce.catalog.action.executor.CommerceCatalogCreator]]>
+                </script>
+                <script-language>java</script-language>
+                <priority>1</priority>
+                <execution-type>onEntry</execution-type>
+            </action>
+        </actions>
+        <labels>
+            <label language-id="en_US">
+                Create Supplier Catalog
+            </label>
+        </labels>
+        <transitions>
+            <transition>
+                <labels>
+                    <label language-id="en_US">
+                        Trace
+                    </label>
+                </labels>
+                <name>4129e0c9-dcc0-4e87-acae-bf0c557067af</name>
+                <target>9780468c-6b1b-4308-a692-12aadeb2a465</target>
+                <default>true</default>
+            </transition>
+        </transitions>
+    </state>
+    <state>
+        <name>9780468c-6b1b-4308-a692-12aadeb2a465</name>
+        <description>Execute actions in the workflow.</description>
+        <metadata>
+            <![CDATA[
+				{
+					"xy": [
+						517.7265625,
+						444
+					]
+				}
+			]]>
+        </metadata>
+        <actions>
+            <action>
+                <name>Postaction Inspection</name>
+                <description></description>
+                <script>
+                    <![CDATA[com.liferay.workflow.context.inspector.action.executor.WorkflowContextInspector]]>
+                </script>
+                <script-language>java</script-language>
+                <priority>1</priority>
+                <execution-type>onEntry</execution-type>
+            </action>
+        </actions>
+        <labels>
+            <label language-id="en_US">
+                Inspect Workflow Context
+            </label>
+        </labels>
+        <transitions>
+            <transition>
+                <labels>
+                    <label language-id="en_US">
+                        Complete
+                    </label>
+                </labels>
+                <name>e809a565-6ada-4173-94d6-1f53b51c61d2</name>
+                <target>003fe1e7-e620-4bbf-9dfd-57edb817d1f1</target>
+                <default>true</default>
+            </transition>
+        </transitions>
+    </state>
+</workflow-definition>
